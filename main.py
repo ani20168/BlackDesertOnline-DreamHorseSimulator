@@ -1,19 +1,22 @@
 import random
+
 # 讓使用者輸入材料
 def input_materials():
     while True:
         materials = input("請輸入「石尾碎草」、「微風海螺海藻」、「純淨的森林氣息」數量，用空格分開(EX:80 80 40):")
         # 分割材料並轉換成數字
         materials = materials.split()
-        materials = [int(x) for x in materials]
 
-        # 判斷材料總和是否為200
-        if sum(materials) != 200:
-            print("材料須為200")
-        # 判斷單種材料是否超過180
-        elif any(material > 180 for material in materials):
-            print("輸入的材料過多")
-        # 如果材料符合條件，則退出迴圈
+        try:
+            materials = [int(float(x)) for x in materials]
+        except ValueError:
+            print("錯誤，請重新輸入材料數量")
+            continue
+
+
+        if len(materials) != 3 or sum(materials) != 200 or any(material > 180 for material in materials):
+            print("請輸入3種材料，共200個，單種材料最多180個")
+            continue
         else:
             return materials
 
