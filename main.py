@@ -1,4 +1,6 @@
 import random
+import os
+import msvcrt
 
 # 讓使用者輸入材料
 def input_materials():
@@ -41,8 +43,9 @@ def awaken_horse(probability_flying_horse, probability_unicorn, probability_hell
     # 重複直到覺醒成功為止
     while True:
         # 顯示訊息並等待使用者的輸入
-        response = input("目前成功率為{:.1f}%(+{})，按下y確定覺醒:".format(success_rate * 100, layer))
-
+        print("目前成功率為{:.1f}%(+{})，按下y確定覺醒:".format(success_rate * 100, layer))
+        response = msvcrt.getch().decode()
+        
         # 如果使用者按下y，則進行計算
         if response == "y":
             # 使用隨機數生成器生成一個0到1之間的小數
@@ -67,16 +70,21 @@ def awaken_horse(probability_flying_horse, probability_unicorn, probability_hell
                 # 否則，失敗次數+1，成功率和層數也增加
                 layer += 1
                 success_rate += 0.002
-        else:
-            # 如果使用者沒有按下y，則繼續等待輸入
-            continue
 
 while True:
+    os.system('cls' if os.name == 'nt' else 'clear')
     materials = input_materials()
     horse_probability = calculate_horse_probability(materials)
     awaken_horse(horse_probability[0],horse_probability[1],horse_probability[2])
     # 等待使用者輸入
-    choice = input("按下任意鍵結束程式，或按r重新輸入材料: ")
-    if choice != 'r':
-        break
+    print("按下y以外的任意鍵結束程式，或按r重新輸入材料: ")
+    while True:
+        choice = msvcrt.getch().decode()
+        if choice == 'r':
+            break
+        elif choice == 'y':
+            continue
+        else:
+            exit()
+
 
